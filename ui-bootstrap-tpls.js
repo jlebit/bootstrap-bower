@@ -2,7 +2,7 @@
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
 
- * Version: 0.13.4.1 - 2015-10-01
+ * Version: 0.13.4 - 2015-10-06
  * License: MIT
  */
 angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.bindHtml","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.position","ui.bootstrap.datepicker","ui.bootstrap.dropdown","ui.bootstrap.modal","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.transition","ui.bootstrap.typeahead"]);
@@ -1848,7 +1848,12 @@ function($compile, $parse, $document, $rootScope, $position, dateFilter, datePar
       });
 
       var documentClickBind = function(event) {
-        if (scope.isOpen && !(element[0].contains(event.target) || popupEl[0].contains(event.target))) {
+        var popup = $popup[0];
+        var dpContainsTarget = element[0].contains(event.target);
+        // The popup node may not be an element node
+        // In some browsers (IE) only element nodes have the 'contains' function
+        var popupContainsTarget = popup.contains !== undefined && popup.contains(event.target);
+        if (scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
           scope.$apply(function() {
             scope.isOpen = false;
           });
